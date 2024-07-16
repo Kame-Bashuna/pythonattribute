@@ -10,7 +10,7 @@ from rest_framework.response import Response
 class Class_PeriodListView(APIView):
     def get (self,request):
         class_period=Class_Period.objects.all()
-        serializer=Class_PeriodSerializer(student, many=True)
+        serializer=Class_PeriodSerializer(class_period, many=True)
         return Response(serializer.data)
 
 # Create your views here.
