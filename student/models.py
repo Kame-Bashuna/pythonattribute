@@ -6,11 +6,11 @@ class Student(models.Model):
     age=models.PositiveSmallIntegerField()
     email=models.EmailField()
     country=models.CharField(max_length=100)
-    student_year=models.PositiveSmallIntegerField()
+    student_year = models.IntegerField(default=2024)  
     date_of_birth=models.PositiveSmallIntegerField()
-    hobby=models.CharField(max_length=20)
-    student_bio=models.PositiveSmallIntegerField()
-    enrollment_year=models.PositiveSmallIntegerField()
+    hobby = models.CharField(max_length=100, null=False, default='default_hobby')
+    student_bio = models.TextField(null=False, default='default_student_bio')
+    enrollment_year = models.CharField(max_length=100, null=False, default='default_enrollment_year')
 
 
     def __str__(self):

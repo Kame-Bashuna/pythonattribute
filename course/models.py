@@ -10,7 +10,7 @@ class Course(models.Model):
     learning_material=models.CharField(max_length=20)
     course_assignment=models.PositiveSmallIntegerField()
     course_student=models.PositiveSmallIntegerField()
-    course_about=models.CharField(max_length=500)
+    course_about = models.CharField(max_length=100, null=False, default='default_course_about')
 
     
 

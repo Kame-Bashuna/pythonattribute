@@ -5,7 +5,7 @@ class Class(models.Model):
     material=models.CharField(max_length=20)
     method_of_teaching=models.CharField(max_length=20)
     class_prefect=models.CharField(max_length=20)
-    trainer=models.CharField(max_length=20)
+    trainer = models.CharField(max_length=100, null=False, default='default_trainer')
     table=models.PositiveSmallIntegerField()
     chairs=models.PositiveSmallIntegerField()
     class_numberof_student=models.PositiveSmallIntegerField()
