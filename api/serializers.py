@@ -3,6 +3,7 @@ from class_period.models import Class_Period
 from student.models import Student
 from teacher.models import Teacher
 from course.models import Course
+from class.models import Class
 
 
 
