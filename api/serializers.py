@@ -27,3 +27,12 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model=Course
         field="__all__"
+
+class ClassSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Class
+        field="__all__"        
+
+
+        
+
