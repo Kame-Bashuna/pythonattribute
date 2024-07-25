@@ -1,8 +1,8 @@
 
 
 from rest_framework.views import APIView
-from class_period.models import ClassPeriod
-from .serializers import ClassPeriodListView
+from class_period.models import Class_Period
+from .serializers import Class_PeriodListView
 from student.models import Student
 from .serializers import StudentListView
 from teacher.models import Teacher
@@ -73,15 +73,15 @@ class Class_PeriodListView(APIView):
             return Response(serializer.errors,status=status.HTTP_BADREQUEST)  
 
 
- class ClassDetailView(APIView):
+class ClassDetailView(APIView):
     def get (self,request):
-        class=Class.objects.all(id=id)
-        serializer=ClassSerializer("class")
+        class_objects=Class.objects.filter(id=id)
+        serializer=ClassSerializer("class_objects")
         return Response(serializer.data)  
 
     def put(self,request):
-        class=Class.objects.get(id=id)
-        serializer=ClassSerializer(class,data=requestdata)
+        class_instance=Class.objects.get(id=id)
+        serializer=ClassSerializer(class_instance,data=requestdata)
 
         if serializer.is_values():
            serializer.Save()
@@ -92,11 +92,10 @@ class Class_PeriodListView(APIView):
 
 
     def delete(self,request,id):
-        class=Class.objects.get(id=id)
-        class.delete()
+        class_objects=Class.objects.get(id=id)
+        class_objects.delete()
         return Response(status=status.HTTP_202_ACCEPTED)        
            
-
 
 
 class TeacherListView(APIView):
@@ -115,7 +114,7 @@ class TeacherListView(APIView):
             return Response(serializer.errors,status=status.HTTP_BADREQUEST) 
 
 
- class TeacherDetailView(APIView):
+class TeacherDetailView(APIView):
     def get (self,request):
         teacher=Teacher.objects.all(id=id)
         serializer=TeacherSerializer("teacher")
@@ -140,7 +139,6 @@ class TeacherListView(APIView):
 
 
 
-
 class CourseListView(APIView):
     def get (self,request):
         course=Course.objects.all()
@@ -158,7 +156,7 @@ class CourseListView(APIView):
 
 
 
- class CourseDetailView(APIView):
+class CourseDetailView(APIView):
     def get (self,request):
         course=Course.objects.all(id=id)
         serializer=CourseSerializer("course")
