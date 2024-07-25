@@ -13,6 +13,6 @@ class Class_Period(models.Model):
       day_of_the_week=models.CharField(max_length=100)
 
       def __str__(self):
-        return self.start_time 
+        return f"{self.start_time } "
         # Example: Return a field to represent the object
 

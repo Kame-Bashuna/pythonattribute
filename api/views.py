@@ -2,13 +2,15 @@
 
 from rest_framework.views import APIView
 from class_period.models import Class_Period
-from .serializers import Class_PeriodListView
 from student.models import Student
-from .serializers import StudentListView
-from teacher.models import Teacher
-from .serializers import TeacherListView
+from .serializers import StudentSerializer
+from teachers.models import Teachers
+from .serializers import TeachersSerializer
 from course.models import Course
-from .serializers import CourseListView
+from .serializers import CourseSerializer
+from classroom.models import Classes
+from .serializers import ClassesSerializer
+
 
 
 
@@ -25,7 +27,7 @@ class StudentListView(APIView):
         return Response(serializer.data)
 
     def post(self,request):
-        serializer=StudentListView(data=requestdata)
+        serializer=StudentListView(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
@@ -41,7 +43,7 @@ class StudentDetailView(APIView):
 
     def put(self,request):
         student=Student.objects.get(id=id)
-        serializer=StudentSerializer(student,data=requestdata)
+        serializer=StudentSerializer(student,data=request.data)
 
         if serializer.is_values():
            serializer.Save()
@@ -64,7 +66,7 @@ class Class_PeriodListView(APIView):
         return Response(serializer.data)
 
     def post(self,request):
-        serializer=ClassPeriodListView(data=requestdata)
+        serializer=ClassPeriodListView(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
@@ -73,15 +75,17 @@ class Class_PeriodListView(APIView):
             return Response(serializer.errors,status=status.HTTP_BADREQUEST)  
 
 
-class ClassDetailView(APIView):
+            
+
+class Class_PeriodDetailView(APIView):
     def get (self,request):
-        class_objects=Class.objects.filter(id=id)
-        serializer=ClassSerializer("class_objects")
+        class_period=Class_Period.objects.all(id=id)
+        serializer=Class_PeriodSerializer("class_period")
         return Response(serializer.data)  
 
     def put(self,request):
-        class_instance=Class.objects.get(id=id)
-        serializer=ClassSerializer(class_instance,data=requestdata)
+        class_period=Class_Period.objects.get(id=id)
+        serializer=StudentSerializer(class_period,data=request.data)
 
         if serializer.is_values():
            serializer.Save()
@@ -92,9 +96,54 @@ class ClassDetailView(APIView):
 
 
     def delete(self,request,id):
-        class_objects=Class.objects.get(id=id)
-        class_objects.delete()
-        return Response(status=status.HTTP_202_ACCEPTED)        
+        class_period=Class_Period.objects.get(id=id)
+        student.delete()
+        return Response(status=status.HTTP_202_ACCEPTED)              
+
+
+
+
+class ClassesDetailView(APIView):
+    def get (self,request):
+        classes=Classes.objects.filter(id=id)
+        serializer=ClassesSerializer("class")
+        return Response(serializer.data)  
+
+    def put(self,request):
+        classes=Classes.objects.get(id=id)
+        serializer=ClassesSerializer(classes,data=request.data)
+
+        if serializer.is_values():
+           serializer.Save()
+           return Response (serializer.data,status=status.HTTP_201_CREATED) 
+           
+        else:
+            return Response (serializer.data,status=status.HTTP_400_BAD_REQUEST)
+
+
+    def delete(self,request,id):
+        classes=Classes.objects.get(id=id)
+        classes.delete()
+        return Response(status=status.HTTP_202_ACCEPTED)  
+
+
+class ClassesListView(APIView):
+    def get (self,request):
+        classes=Classes.objects.all()
+        serializer=ClassesSerializer(classes, many=True)
+        return Response(serializer.data)
+
+    def post(self,request):
+        serializer=ClassesListView(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+
+        else:
+            return Response(serializer.errors,status=status.HTTP_BADREQUEST)         
+
+        
+             
            
 
 
@@ -105,7 +154,7 @@ class TeacherListView(APIView):
         return Response(serializer.data) 
 
     def post(self,request):
-        serializer=TeacherListView(data=requestdata)
+        serializer=TeacherListView(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
@@ -122,7 +171,7 @@ class TeacherDetailView(APIView):
 
     def put(self,request):
         teacher=Teacher.objects.get(id=id)
-        serializer=TeacherSerializer(teacher,data=requestdata)
+        serializer=TeacherSerializer(teacher,data=request.data)
 
         if serializer.is_values():
            serializer.Save()
@@ -164,7 +213,7 @@ class CourseDetailView(APIView):
 
     def put(self,request):
         course=Course.objects.get(id=id)
-        serializer=CourseSerializer(course,data=requestdata)
+        serializer=CourseSerializer(course,data=request.data)
 
         if serializer.is_values():
            serializer.Save()
@@ -177,19 +226,9 @@ class CourseDetailView(APIView):
     def delete(self,request,id):
         course=Course.objects.get(id=id)
         teacher.delete()
-        return Response(status=status.HTTP_202_ACCEPTED)                   
+        return Response(status=status.HTTP_202_ACCEPTED)  
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-# Create your views here.
