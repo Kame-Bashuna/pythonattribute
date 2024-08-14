@@ -13,13 +13,11 @@ from .serializers import ClassesSerializer
 
 
 
-
 from rest_framework import status
 from rest_framework.response import Response
 
 
-
-        
+       
 class StudentListView(APIView):
     def get (self,request):
         student=Student.objects.all()
@@ -38,7 +36,14 @@ class StudentListView(APIView):
 class StudentDetailView(APIView):
     def get (self,request):
         student=Student.objects.all(id=id)
-        serializer=StudentSerializer("student")
+        first_name=request.query_params.get("first_name")
+        country=request.query_params.get("country")
+        if first_name:
+            student=students.objects.filter(firstname=first_name)
+
+        if country:
+            student=students.objects.filter(country=country)    
+        serializer=StudentSerializer(students,many=True)
         return Response(serializer.data)  
 
     def put(self,request):
@@ -46,7 +51,7 @@ class StudentDetailView(APIView):
         serializer=StudentSerializer(student,data=request.data)
 
         if serializer.is_values():
-           serializer.Save()
+           serializer.save()
            return Response (serializer.data,status=status.HTTP_201_CREATED) 
            
         else:
@@ -56,7 +61,23 @@ class StudentDetailView(APIView):
     def delete(self,request,id):
         student=Student.objects.get(id=id)
         student.delete()
-        return Response(status=status.HTTP_202_ACCEPTED)        
+        return Response(status=status.HTTP_202_ACCEPTED)    
+
+
+    def enroll_student(self,student,code):
+        code=Code.objects.get(id=code)
+        studentcourses.add(code)
+
+
+    def post(self,request,id):
+        student=Student.objects.get(id=id)
+        action=request.data.get("action")
+        if action=="email":
+            code=request.data.get("code")  
+            self.enroll_student(student,code)
+            return Response(status=status.HTTP_202_ACCEPTED)    
+
+
 
 
 class Class_PeriodListView(APIView):
